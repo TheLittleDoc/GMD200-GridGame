@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7995699686217435800}
   - component: {fileID: 5773020902582849140}
+  - component: {fileID: 4501429844473175942}
   m_Layer: 0
   m_Name: Tile-Test(Cocoa)
   m_TagString: Untagged
@@ -84,3 +85,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4501429844473175942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7343785758313331305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42c7062d70b74c54c93da0d932aa74c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Orientation>k__BackingField: 0
+  <Width>k__BackingField: 0
+  <Height>k__BackingField: 0
+  <HexSize>k__BackingField: 0
+  <HexPrefab>k__BackingField: {fileID: 0}
