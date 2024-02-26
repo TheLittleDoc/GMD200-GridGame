@@ -6,7 +6,7 @@ using UnityEngine;
 
 public static class HexMetrics
 {
-    public static float OuterRadius (float hexSize)
+    public static float OuterRadius(float hexSize)
     {
         return hexSize;
     }
@@ -33,24 +33,25 @@ public static class HexMetrics
         {
             angle += 30f;
         }
-        Vector3 corner = new Vector3(hexSize * Mathf.Cos(angle * Mathf.Deg2Rad), 0f, hexSize * Mathf.Sin(angle * Mathf.Deg2Rad));
+        Vector3 corner = new Vector3(hexSize * Mathf.Cos(angle * Mathf.Deg2Rad), hexSize * Mathf.Sin(angle * Mathf.Deg2Rad), 0f);
         return corner;
     }
 
-    public static Vector3 Center(float hexSize, int x, int z, HexOrientation orientation)
+    public static Vector3 Center(float hexSize, int x, int y, HexOrientation orientation)
     {
-        Vector3 centerPosition = new Vector3(0, 0, 0);
+        Vector3 centrePosition;
         if (orientation == HexOrientation.PointyTop)
         {
-            centerPosition.x = (x + z * 0.5f - z / 2) * (InnerRadius(hexSize) * 2f);
-            centerPosition.y = 0f;
-            centerPosition.z = z * (OuterRadius(hexSize) * 1.5f);
-        } else
-        {
-            centerPosition.x = (x) * (OuterRadius(hexSize) * 1.5f);
-            centerPosition.y = 0f;
-            centerPosition.x = (z + x * 0.5f - x / 2) * (InnerRadius(hexSize) * 2f);
+            centrePosition.x = (x + y * 0.5f - y / 2) * (InnerRadius(hexSize) * 2f);
+            centrePosition.y = y * (OuterRadius(hexSize) * 1.5f);
+            centrePosition.z = 0f;
         }
-        return centerPosition;
+        else
+        {
+            centrePosition.x = (x) * (OuterRadius(hexSize) * 1.5f);
+            centrePosition.y = (y + x * 0.5f - x / 2) * (InnerRadius(hexSize) * 2f);
+            centrePosition.z = 0f;
+        }
+        return centrePosition;
     }
 }
