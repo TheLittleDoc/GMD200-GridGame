@@ -37,7 +37,7 @@ public class HexTile : MonoBehaviour
 
     }
 
-    public static Vector3Int Direction(int direction)
+    private static Vector3Int Direction(int direction)
     {
         return _directions[(int)direction];
     }
@@ -57,7 +57,7 @@ public class HexTile : MonoBehaviour
         
     }
     
-    public Vector3Int[] GetNeighbors()
+    public static Vector3Int[] GetNeighbors(Vector3Int coordinate)
     {
         Vector3Int[] neighbors = new Vector3Int[6];
         for (int i = 0; i < 6; i++)
@@ -69,9 +69,9 @@ public class HexTile : MonoBehaviour
         return neighbors;
     }
 
-    public bool IsNeighbor(Vector3Int target) { return GetDistance(coordinate, target) == 1; }
+    public static bool IsNeighbor(Vector3Int coordinate, Vector3Int target) { return GetDistance(coordinate, target) == 1; }
 
-    private static int GetDistance(Vector3Int a, Vector3Int b)
+    public static int GetDistance(Vector3Int a, Vector3Int b)
     {
         // Get the number of moves away a tile is from another tile
         var aNew = Vector3Int.zero;
