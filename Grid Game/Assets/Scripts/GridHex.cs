@@ -12,7 +12,7 @@ public class HexGrid : MonoBehaviour
     [field: SerializeField] public int Width { get; private set; }
     [field: SerializeField] public int Height { get; private set; }
     [field: SerializeField] public float HexSize { get; private set; }
-    [field: SerializeField] public GameObject HexPrefab { get; private set; }
+    private GameObject HexPrefab { get; set; }
     //TODO: Create a grid of hexes
     //TODO: Store the individual tiles in an array
     //TODO: Methods to get, change, add , and remove tiles
@@ -24,12 +24,12 @@ public class HexGrid : MonoBehaviour
         {
             for (int x = 0; x < Width; x++)
             {
-                Vector3 centrePosition = HexMetrics.Center(HexSize, x, y, Orientation) + transform.position;
+                Vector3 centerPosition = HexMetrics.Center(HexSize, x, y, Orientation) + transform.position;
                 for (int s = 0; s < HexMetrics.Corners(HexSize, Orientation).Length; s++)
                 {
                     Gizmos.DrawLine(
-                        centrePosition + HexMetrics.Corners(HexSize, Orientation)[s % 6],
-                        centrePosition + HexMetrics.Corners(HexSize, Orientation)[(s + 1) % 6]
+                        centerPosition + HexMetrics.Corners(HexSize, Orientation)[s % 6],
+                        centerPosition + HexMetrics.Corners(HexSize, Orientation)[(s + 1) % 6]
                         );
                 }
             }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5773020902582849140}
   - component: {fileID: 4501429844473175942}
   m_Layer: 0
-  m_Name: Tile-Test(Cocoa)
+  m_Name: CocoaTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

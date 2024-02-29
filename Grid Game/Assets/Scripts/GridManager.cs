@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class GridManager : MonoBehaviour
+public class GridManagerA : MonoBehaviour
 {
     public int numRows = 5;
     public int numCols = 5;

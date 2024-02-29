@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GridTile : MonoBehaviour
 {
-    public GridManager gridManager;
+    public GridManagerA gridManager;
     public Vector2Int gridCoords;
 
     private void OnMouseOver()
