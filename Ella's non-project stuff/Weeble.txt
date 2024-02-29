@@ -1,0 +1,61 @@
+public class Weeble {
+	bool isWug;
+	Vector3Int coor;
+}
+class Pawn : Weeble {
+	bool isValidMove(Vector3Int end) {
+		return HexTile.isNeighbor(coor, end);
+	}
+	tile[] getValidMoves() {
+		return HexTile.getNeighbors(coor);
+	}
+}
+class Diag : Weeble {
+	bool isValidMove(Vector3Int end) {
+		return HexTile.getDistance(coor, end) == 2 && coor.x != 0 && coor.y != 0 && coor.z != 0;
+	}
+	tile[] getValidMoves() {
+		List<Vector3Int[]> out {
+			new Vector3Int(2, -1, -1) + coor,
+			new Vector3Int(1, -2, 1) + coor,
+			new Vector3Int(-1, -1, 2) + coor,
+			new Vector3Int(-2, 1, 1) + coor,
+			new Vector3Int(-1, 2, -1) + coor,
+			new Vector3Int(1, 1, -2) + coor
+		};
+		int i = 0;
+		while (i<6) {
+			if (out[i].x > 3 || out[i].y > 3 || out[i].z > 3) {
+				out.RemoveAt(i);
+			} else {
+				i++;
+			}
+		}
+		return out;
+	}
+}
+class King : Pawn {
+	
+}
+class Mimic : Pawn {
+	Weeble mask;
+}
+class Scout : Weeble {
+	bool isValidMove(Vector3Int end) {
+		return HexTile.getDistance(coor, end) < 4;
+	}
+	tile[] getValidMoves() {
+		List<Vector3Int[]> out = new List<Vector3Int>();
+		
+		for (int i=0; i<4; i++) {
+			for (int j=i==0?0:-3; j<4-i; j++) {
+				if (i+coor.x > 3 || j+coor.y > 3 || coor.z-i-j > 3) {
+					out.add(new Vector3Int(i+coor.x, j+coor.y, coor.z-i-j));
+					out.add(-(new Vector3Int(i+coor.x, j+coor.y, coor.z-i-j)));
+				}
+			}
+		}
+		out.RemoveAt(0);
+		return out;
+	}
+}
