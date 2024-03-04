@@ -11,6 +11,7 @@ public class TilesThree : MonoBehaviour
     int[,] tiles;
     int mapSizeX = 10;
     int mapSizeY = 10;
+    Vector3Int currentTile = new Vector3Int(0, 0, 0);
 
     void Start()
     {
@@ -47,14 +48,24 @@ public class TilesThree : MonoBehaviour
     }
 
     // Returns the coords of the tile
-    public Vector3 TileCoordToWorldCoord(int x, int y)
+    public Vector3Int TileCoordToWorldCoord(int x, int y)
     {
-        return new Vector3(x, y, 0);
+        return new Vector3Int(x, y, 0);
     }
 
     // Moves the selected object to the tile clicked
     public void MoveObject(int x, int y)
     {
-        selectedObject.transform.position = TileCoordToWorldCoord (x, y);
+        // If selectedTile +/-1 is equal to currentTile, then proceed
+        if (TileCoordToWorldCoord(x, y) == currentTile + new Vector3Int(1, 0, 0) || TileCoordToWorldCoord(x, y) == currentTile + new Vector3Int(0, 1, 0) 
+            || TileCoordToWorldCoord(x, y) == currentTile + new Vector3Int(-1, 0, 0) || TileCoordToWorldCoord(x, y) == currentTile + new Vector3Int(0, -1, 0))
+        {
+            selectedObject.transform.position = TileCoordToWorldCoord(x, y);
+            currentTile = TileCoordToWorldCoord(x, y);
+        } else
+        {
+            Debug.Log("No! Too far away!");
+        }
+        
     }
 }
