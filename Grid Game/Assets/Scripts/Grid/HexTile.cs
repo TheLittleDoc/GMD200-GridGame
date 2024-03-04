@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -22,7 +23,7 @@ public class HexTile : MonoBehaviour
     //private bool _isOccupied;
     //private bool _isHighlighted;
     //private bool _isSelectable;
-    [SerializeField] Vector3Int coordinate = Vector3Int.zero;
+    private Vector3Int coordinate = Vector3Int.zero;
     private GameObject _tile;
 
     public void SetCoordinate(Vector3Int newCoordinate)
@@ -33,11 +34,23 @@ public class HexTile : MonoBehaviour
         newPosition.y -= newCoordinate.x * (float)Math.Sqrt(3)/4;
         newPosition.x = newCoordinate.x * .75f;
         
-        transform.position = newPosition;
+        //transform.position = newPosition;
+        transform.DOMove(newPosition, 0.5f);
 
     }
+    
+    //trigger when coordinate is changed
+    public Vector3Int Coordinate
+    {
+        get => coordinate;
+        set
+        {
+            coordinate = value;
+            SetCoordinate(value);
+        }
+    }
 
-    private static Vector3Int Direction(int direction)
+    public static Vector3Int Direction(int direction)
     {
         return _directions[(int)direction];
     }
