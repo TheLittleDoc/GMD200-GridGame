@@ -146,7 +146,7 @@ public class GridManager : MonoBehaviour
             if (_currentTile != null)
             {
                 Debug.Log("Tile clicked: " + _currentTile.GetComponent<HexTile>().Coordinate);
-                _testGreeble.transform.position = HexTile.GridToWorldspace(_currentTile.GetComponent<HexTile>().Coordinate);
+                _testGreeble.GetComponent<GreebleTestEly>().MoveGreeble(_currentTile.GetComponent<HexTile>().Coordinate);
             }
         }
     }

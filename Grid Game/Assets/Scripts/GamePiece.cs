@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class GreebleTestEly : MonoBehaviour
@@ -16,5 +17,14 @@ public class GreebleTestEly : MonoBehaviour
     void Update()
     {
         
+    }
+    
+    public void MoveGreeble(Vector3Int newCoordinate)
+    {
+        //dotween
+        
+        transform.DOMove(HexTile.GridToWorldspace(new Vector3Int(newCoordinate.x, newCoordinate.y, newCoordinate.z)), 0.5f);
+        
+        //transform.position = HexTile.GridToWorldspace(new Vector3Int(newCoordinate.x, newCoordinate.y, newCoordinate.z));
     }
 }

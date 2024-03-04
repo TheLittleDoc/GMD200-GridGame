@@ -107,23 +107,7 @@ public class HexTile : MonoBehaviour
         return max;
 
     }
-
-    private void Update()
-    {
-        if (Input.GetButtonDown("Fire1"))
-        {
-            var ray = _camera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                if (hit.collider.gameObject == gameObject)
-                {
-                    Debug.Log("You clicked on " + GetCoord());
-                }
-            }
-            
-        }
-    }
+    
 
     public static Vector3Int RoundToNearestHex(Vector3 mousePos)
     {
