@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using UnityEngine;
 
@@ -12,5 +13,12 @@ public class Pawn : Weeble
     public override Vector3Int[] getValidMoves()
     {
         return HexTile.GetNeighbors(coor);
+    }
+    public Pawn(Team team, Vector3Int coordinates)
+    {
+        this.team = team;
+        type = Type.Pawn;
+        coor = coordinates;
+        isLive = true;
     }
 }

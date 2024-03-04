@@ -15,4 +15,17 @@ class Mimic : Weeble
     {
         return mask.getValidMoves();
     }
+    public Mimic(Team team, Vector3Int coordinates)
+    {
+        this.team = team;
+        type = Type.Mimic;
+        coor = coordinates;
+        isLive = true;
+        mask = new Pawn(team, coordinates);
+    }
+    public override void setCoordinates(Vector3Int newCoordinates)
+    {
+        coor = newCoordinates;
+        mask.setCoordinates(newCoordinates);
+    }
 }

@@ -5,48 +5,65 @@ using UnityEngine;
 
 public abstract class Weeble
 {
-    protected WeebleTeam team;
-    protected WeebleType type;
+    protected Team team;
+    protected Type type;
     protected Vector3Int coor;
+    protected bool isLive;
     public abstract bool isValidMove(Vector3Int end);
     public abstract Vector3Int[] getValidMoves();
     public virtual bool canBeTakenBy(Weeble weeb)
     {
         return true;
     }
+    public bool isAlive()
+    {
+        return isLive;
+    }
+    public bool isDead()
+    {
+        return !isLive;
+    }
+    public void setDead()
+    {
+        isLive = false;
+    }
+    public void setAlive()
+    {
+        isLive = true;
+    }
     public bool isWug()
     {
-        return team == WeebleTeam.Wug;
+        return team == Team.Wug;
     }
     public bool isGreeble()
     {
-        return team == WeebleTeam.Greeble;
+        return team == Team.Greeble;
     }
-    public WeebleTeam getTeam()
+    public Team getTeam()
     {
         return team;
     }
     public bool isPawn()
     {
-        return type == WeebleType.Pawn;
+        return type == Type.Pawn;
     }
     public bool isDiag()
     {
-        return type == WeebleType.Diag;
+        return type == Type.Diag;
     }
     public bool isScout()
     {
-        return type == WeebleType.Scout;
+        return type == Type.Scout;
     }
     public bool isMimic()
     {
-        return type == WeebleType.Mimic;
+        return type == Type.Mimic;
     }
     public bool isKing()
     {
-        return type == WeebleType.King;
+        return type == Type.King;
     }
-    public WeebleType getType()
+    public Type getType()
     {
         return type;
     }
@@ -54,12 +71,16 @@ public abstract class Weeble
     {
         return coor;
     }
+    public virtual void setCoordinates(Vector3Int newCoordinates)
+    {
+        coor = newCoordinates;
+    }
+    public enum Type
+    {
+        Pawn, Diag, Scout, Mimic, King
+    };
+    public enum Team
+    {
+        Greeble, Wug
+    };
 }
-public enum WeebleType
-{
-    Pawn, Diag, Scout, Mimic, King
-};
-public enum WeebleTeam
-{
-    Greeble, Wug
-};

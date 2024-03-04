@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,7 +8,7 @@ public class Diag : Weeble
 {
     public override bool isValidMove(Vector3Int end)
     {
-        return HexTile.GetDistance(coor, end) == 2 && coor.x != 0 && coor.y != 0 && coor.z != 0;
+        return HexTile.GetDistance(coor, end) == 2 && end.x - coor.x != 0 && end.y - coor.y != 0 && end.z - coor.z != 0;
     }
     public override Vector3Int[] getValidMoves()
     {
@@ -31,5 +32,12 @@ public class Diag : Weeble
             }
         }
         return list.ToArray();
+    }
+    public Diag(Team team, Vector3Int coordinates)
+    {
+        this.team = team;
+        type = Type.Diag;
+        coor = coordinates;
+        isLive = true;
     }
 }

@@ -27,4 +27,11 @@ class Scout : Weeble
 		list.RemoveAt(0);
         return list.ToArray();
     }
+    public Scout(Team team, Vector3Int coordinates)
+    {
+        this.team = team;
+        type = Type.Scout;
+        coor = coordinates;
+        isLive = true;
+    }
 }
