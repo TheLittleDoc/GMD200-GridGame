@@ -50,3 +50,6 @@ TagManager:
   - name: grid.
     uniqueID: 3582168513
     locked: 0
+  - name: Background
+    uniqueID: 1503608263
+    locked: 0

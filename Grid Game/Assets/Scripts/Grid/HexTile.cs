@@ -25,6 +25,14 @@ public class HexTile : MonoBehaviour
     //private bool _isSelectable;
     private Vector3Int coordinate = Vector3Int.zero;
     private GameObject _tile;
+    private Camera _camera;
+    
+    
+
+    private void Awake()
+    {
+        _camera = Camera.main;
+    }
 
     public void SetCoordinate(Vector3Int newCoordinate)
     {
@@ -69,6 +77,11 @@ public class HexTile : MonoBehaviour
         
         
     }
+
+    private string GetCoord()
+    {
+        return coordinate.x + ", " + coordinate.y + ", " + coordinate.z;
+    }
     
     public static Vector3Int[] GetNeighbors(Vector3Int coordinate)
     {
@@ -94,7 +107,57 @@ public class HexTile : MonoBehaviour
         return max;
 
     }
+
+    private void Update()
+    {
+        if (Input.GetButtonDown("Fire1"))
+        {
+            var ray = _camera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.collider.gameObject == gameObject)
+                {
+                    Debug.Log("You clicked on " + GetCoord());
+                }
+            }
+            
+        }
+    }
+
+    public static Vector3Int RoundToNearestHex(Vector3 mousePos)
+    {
+        var coord = new Vector3Int
+        {
+            x = Mathf.RoundToInt((mousePos.x * (2f/3f)) / (float)Math.Sqrt(3)),
+            y = Mathf.RoundToInt((-mousePos.y * (2f/3f)) / (float)Math.Sqrt(3)),
+            z = Mathf.RoundToInt(((-mousePos.x * (2f/3f)) - (mousePos.y * (2f/3f))) / (float)Math.Sqrt(3))
+
+        };
+        return coord;
+    }
+
+    public static Vector3Int WorldspaceToGrid(Vector2 worldCoord)
+    {
+        var coord = new Vector3Int();
+        
+        //convert world space to hex coordinate as is implemented above
+        coord.x = Mathf.RoundToInt((worldCoord.x * (2f/3f)) / (float)Math.Sqrt(3));
+        coord.y = Mathf.RoundToInt((-worldCoord.y * (2f/3f)) / (float)Math.Sqrt(3));
+        coord.z = Mathf.RoundToInt(((-worldCoord.x * (2f/3f)) - (worldCoord.y * (2f/3f))) / (float)Math.Sqrt(3));
+        
+        
+        
+        return coord;
+    }
     
     
-    
+    public static Vector2 GridToWorldspace(Vector3Int gridCoord)
+    {
+        var worldCoord = new Vector2();
+        worldCoord.x = gridCoord.x * .75f;
+        worldCoord.y = -gridCoord.y * (float)Math.Sqrt(3)/2;
+        worldCoord.y -= gridCoord.x * (float)Math.Sqrt(3)/4;
+        return worldCoord;
+    }
 }

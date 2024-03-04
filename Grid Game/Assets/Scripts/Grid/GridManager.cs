@@ -19,9 +19,17 @@ public class GridManager : MonoBehaviour
     private int direction = 0;
     private int sideCount = 0;
     
+    private GameObject mouseSprite;
+    private Camera _camera;
+    private GameObject _currentTile;
+    private GameObject _previousTile;
+    private GameObject _testGreeble;
+
     // Start is called before the first frame update
     void Start()
     {
+        Debug.developerConsoleVisible = true;
+        _camera = Camera.main;
         tileList = new List<GameObject>
         {
             Instantiate(tilePrefab.gameObject, new Vector3(0, 0, 0), Quaternion.identity)
@@ -33,9 +41,13 @@ public class GridManager : MonoBehaviour
         tileList[0].transform.parent = transform;
         tileList[0].GetComponent<SpriteRenderer>().sprite = tileSprites[0];
         
+        mouseSprite = new GameObject("Mouse Sprite");
+        mouseSprite.AddComponent<SpriteRenderer>();
+        mouseSprite.GetComponent<SpriteRenderer>().sprite = tileSprites[0];
         
         
         
+        _testGreeble = GameObject.FindGameObjectWithTag("Greeble");
         
         
             
@@ -89,6 +101,54 @@ public class GridManager : MonoBehaviour
                 
         coordinateToSet += thisDirection;
         yield return null;
+    }
+    
+    // Update is called once per frame
+    void Update()
+    {
+        //get the mouse position
+        var mousePos = Input.mousePosition;
+        
+        //convert the mouse position to world space
+        mousePos = _camera.ScreenToWorldPoint(mousePos);
+
+        _previousTile = _currentTile == _previousTile ? _previousTile : _currentTile;
+        _currentTile = (Physics2D.OverlapPoint(mousePos)) ? Physics2D.OverlapPoint(mousePos).gameObject : null;
+        
+        
+        if (_currentTile != null && _currentTile.GetComponent<HexTile>() != null && _currentTile != _previousTile)
+        {
+            //Debug.Log("tile is: " + _currentTile.GetComponent<HexTile>().Coordinate);
+            _currentTile.GetComponent<SpriteRenderer>().color = Color.yellow;
+            if(_previousTile)
+                _previousTile.GetComponent<SpriteRenderer>().color = Color.white;
+            Debug.Log(HexTile.GetDistance(_currentTile.GetComponent<HexTile>().Coordinate, Vector3Int.zero));
+            
+        } else if (_currentTile == null && _previousTile != null)
+        {
+            _previousTile.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+        
+        
+        
+        CheckInput();
+        
+        
+        
+        
+    }
+    
+    //temp
+    private void CheckInput()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (_currentTile != null)
+            {
+                Debug.Log("Tile clicked: " + _currentTile.GetComponent<HexTile>().Coordinate);
+                _testGreeble.transform.position = HexTile.GridToWorldspace(_currentTile.GetComponent<HexTile>().Coordinate);
+            }
+        }
     }
     
     
