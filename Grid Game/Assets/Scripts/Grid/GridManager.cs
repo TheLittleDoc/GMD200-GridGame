@@ -28,6 +28,7 @@ public class GridManager : MonoBehaviour
     private GameObject _previousTile;
     //private GameObject _testGreeble;
     private GameObject _selectedWeeble;
+    private Vector3Int[] _validMoves;
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +40,7 @@ public class GridManager : MonoBehaviour
             Instantiate(tilePrefab.gameObject, new Vector3(0, 0, 0), Quaternion.identity)
             
         };
-        
+        tileDict[new Vector3Int(0, 0, 0)] = tileList[^1].transform;
         //set coordinate
         tileList[0].GetComponent<HexTile>().SetCoordinate(new Vector3Int(0, 0, 0));
         tileList[0].transform.parent = transform;
@@ -122,11 +123,11 @@ public class GridManager : MonoBehaviour
         if (_currentTile != null && _currentTile.GetComponent<HexTile>() != null && _currentTile != _previousTile)
         {
             //Debug.Log("tile is: " + _currentTile.GetComponent<HexTile>().Coordinate);
-            if (_selectedWeeble == null || !_selectedWeeble.transform.IsChildOf(_currentTile.transform))
+            if (_currentTile.GetComponent<SpriteRenderer>().color == Color.white)
             {
                 _currentTile.GetComponent<SpriteRenderer>().color = Color.yellow;
             }
-            if (_previousTile && (_selectedWeeble == null || !_selectedWeeble.transform.IsChildOf(_previousTile.transform)))
+            if (_previousTile && _previousTile.GetComponent<SpriteRenderer>().color == Color.yellow)
             {
                 _previousTile.GetComponent<SpriteRenderer>().color = Color.white;
             }
@@ -134,7 +135,7 @@ public class GridManager : MonoBehaviour
             
         } else if (_currentTile == null && _previousTile != null)
         {
-            if (_selectedWeeble == null || !_selectedWeeble.transform.IsChildOf(_previousTile.transform))
+            if (_previousTile.GetComponent<SpriteRenderer>().color == Color.yellow)
             {
                 _previousTile.GetComponent<SpriteRenderer>().color = Color.white;
             }
@@ -156,34 +157,46 @@ public class GridManager : MonoBehaviour
         {
             if (_currentTile != null)
             {
+                //on a tile
                 Debug.Log("Tile clicked: " + _currentTile.GetComponent<HexTile>().Coordinate);
 
                 if (_selectedWeeble == null)
                 {
+                    //no weeb yet selected
                     if (_currentTile.transform.childCount > 0 && _currentTile.transform.GetChild(0).GetComponent<GamePiece>().weeb.getTeam() == Gameplay.GetTurn())
                     {
+                        //valid weeb
                         _currentTile.GetComponent<SpriteRenderer>().color = Color.red;
                         _selectedWeeble = _currentTile.transform.GetChild(0).gameObject;
+                        _validMoves = _selectedWeeble.GetComponent<GamePiece>().weeb.getValidMoves();
+                        foreach (Vector3Int coor in _validMoves)
+                        {
+                            tileDict[coor].GetComponent<SpriteRenderer>().color = Color.green;
+                        }
                     }
                 } else
                 {
+                    //trying to move weeb
                     if (!_selectedWeeble.transform.IsChildOf(_currentTile.transform))
                     {
-                        if (_selectedWeeble.GetComponent<GamePiece>().MoveGreeble(_currentTile.GetComponent<HexTile>().Coordinate))
+                        //not trying to move to self
+                        if (_currentTile.transform.childCount > 0)
                         {
-                            _selectedWeeble.transform.parent.GetComponent<SpriteRenderer>().color = Color.white;
-                            _selectedWeeble.transform.parent = _currentTile.transform;
-                            _selectedWeeble = null;
-                            Gameplay.ToggleTurn();
+                            //already a weeb here
+                            DeselectWeeble();
+                        } else if (_selectedWeeble.GetComponent<GamePiece>().MoveGreeble(_currentTile.GetComponent<HexTile>().Coordinate))
+                        {
+                            //if it's a valid move
+                            CleanupWeebleMove();
                         } else
                         {
-                            _selectedWeeble.transform.parent.GetComponent<SpriteRenderer>().color = Color.white;
-                            _selectedWeeble = null;
+                            //bad destination
+                            DeselectWeeble();
                         }
                     } else
                     {
-                        _selectedWeeble = null;
-                        _currentTile.GetComponent<SpriteRenderer>().color = Color.white;
+                        //trying to move to self
+                        DeselectWeeble();
                     }
                 }
 
@@ -191,6 +204,26 @@ public class GridManager : MonoBehaviour
         }
     }
     
+    private void DeselectWeeble()
+    {
+        _selectedWeeble.transform.parent.GetComponent<SpriteRenderer>().color = Color.white;
+        _selectedWeeble = null;
+        foreach (Vector3Int coor in _validMoves)
+        {
+            tileDict[coor].GetComponent<SpriteRenderer>().color = Color.white;
+        }
+    }
+    private void CleanupWeebleMove()
+    {
+        _selectedWeeble.transform.parent.GetComponent<SpriteRenderer>().color = Color.white;
+        _selectedWeeble.transform.parent = _currentTile.transform;
+        _selectedWeeble = null;
+        foreach (Vector3Int coor in _validMoves)
+        {
+            tileDict[coor].GetComponent<SpriteRenderer>().color = Color.white;
+        }
+        Gameplay.ToggleTurn();
+    }
     
 
 }

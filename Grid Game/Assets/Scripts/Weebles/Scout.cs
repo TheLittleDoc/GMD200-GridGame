@@ -1,4 +1,5 @@
 //Wrote By Ella
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -18,14 +19,12 @@ class Scout : Weeble
         {
             for (int j = i == 0 ? 0 : -3; j < 4 - i; j++)
             {
-                if (i + coor.x > 3 || j + coor.y > 3 || coor.z - i - j > 3)
-                {
-					list.Add(new Vector3Int(i + coor.x, j + coor.y, coor.z - i - j));
-					list.Add(-(new Vector3Int(i + coor.x, j + coor.y, coor.z - i - j)));
-                }
+                list.Add(new Vector3Int(i, j, - i - j) + coor);
+                list.Add(-new Vector3Int(i, j, - i - j) + coor);
             }
         }
-		list.RemoveAt(0);
+        list.RemoveAt(0);
+        removeOutOfBoundsResults(list);
         return list.ToArray();
     }
     public Scout(Team team, Vector3Int coordinates)

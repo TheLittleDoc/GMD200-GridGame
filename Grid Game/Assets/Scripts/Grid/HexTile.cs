@@ -89,14 +89,15 @@ public class HexTile : MonoBehaviour
     
     public static Vector3Int[] GetNeighbors(Vector3Int coordinate)
     {
-        Vector3Int[] neighbors = new Vector3Int[6];
+        List<Vector3Int> neighbors = new List<Vector3Int>();
         for (int i = 0; i < 6; i++)
         {
-            var checkDirection = 
-            neighbors[i] = GetNeighbor(coordinate, Direction(i));
+            Vector3Int neighbor = GetNeighbor(coordinate, Direction(i));
+            if (Math.Abs(neighbor.x) < 4 && Math.Abs(neighbor.y) < 4 && Math.Abs(neighbor.z) < 4) {
+                neighbors.Add(GetNeighbor(coordinate, Direction(i)));
+            }
         }
-
-        return neighbors;
+        return neighbors.ToArray();
     }
 
     public static bool IsNeighbor(Vector3Int coordinate, Vector3Int target) { return GetDistance(coordinate, target) == 1; }

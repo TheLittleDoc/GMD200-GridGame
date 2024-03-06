@@ -1,4 +1,5 @@
 // Written by Ella
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,6 +11,22 @@ public abstract class Weeble
     protected Type type;
     protected Vector3Int coor;
     protected bool isLive;
+    protected void removeOutOfBoundsResults(List<Vector3Int> list)
+    {
+        int i = 0;
+        while (i < list.Count)
+        {
+            if (Math.Abs(list[i].x) > 3 || Math.Abs(list[i].y) > 3 || Math.Abs(list[i].z) > 3)
+            {
+                list.RemoveAt(i);
+            }
+            else
+            {
+                i++;
+            }
+        }
+        Debug.Log(list.Count);
+    }
     public abstract bool isValidMove(Vector3Int end);
     public abstract Vector3Int[] getValidMoves();
     public virtual bool canBeTakenBy(Weeble weeb)

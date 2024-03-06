@@ -22,16 +22,7 @@ public class Diag : Weeble
 			new Vector3Int(1, 1, -2) + coor
 
         };
-        int i = 0;
-        while (i < 6)
-        {
-            if (list[i].x > 3 || list[i].y > 3 || list[i].z > 3) {
-				list.RemoveAt(i);
-            } else
-            {
-                i++;
-            }
-        }
+        removeOutOfBoundsResults(list);
         return list.ToArray();
     }
     public Diag(Team team, Vector3Int coordinates)
