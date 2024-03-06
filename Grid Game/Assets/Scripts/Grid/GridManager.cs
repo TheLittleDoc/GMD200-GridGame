@@ -1,3 +1,5 @@
+//Written by Ely
+//Modified by Ella
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,6 +16,7 @@ public class GridManager : MonoBehaviour
     public List<GameObject> tileList;
     public List<GameObject> shells;
     public List<Sprite> tileSprites;
+    public static Dictionary<Vector3Int, Transform> tileDict = new Dictionary<Vector3Int, Transform>();
     private Vector3Int coordinateToSet = new Vector3Int(0, 0, 0);
     
     private int direction = 0;
@@ -23,7 +26,8 @@ public class GridManager : MonoBehaviour
     private Camera _camera;
     private GameObject _currentTile;
     private GameObject _previousTile;
-    private GameObject _testGreeble;
+    //private GameObject _testGreeble;
+    private GameObject _selectedWeeble;
 
     // Start is called before the first frame update
     void Start()
@@ -41,15 +45,13 @@ public class GridManager : MonoBehaviour
         tileList[0].transform.parent = transform;
         tileList[0].GetComponent<SpriteRenderer>().sprite = tileSprites[0];
         
-        mouseSprite = new GameObject("Mouse Sprite");
-        mouseSprite.AddComponent<SpriteRenderer>();
-        mouseSprite.GetComponent<SpriteRenderer>().sprite = tileSprites[0];
-        
-        
-        
-        _testGreeble = GameObject.FindGameObjectWithTag("Greeble");
-        
-        
+        //mouseSprite = new GameObject("Mouse Sprite");
+        //mouseSprite.AddComponent<SpriteRenderer>();
+        //mouseSprite.GetComponent<SpriteRenderer>().sprite = tileSprites[0];
+
+
+
+        //_testGreeble = GameObject.FindGameObjectWithTag("Greeble");
             
         
 
@@ -77,8 +79,9 @@ public class GridManager : MonoBehaviour
                 
                 StartCoroutine(SetCoordinate(coordinateToSet, i));
                 var wait = new WaitForSecondsRealtime(0.1f);
-                
-                
+
+
+                tileDict.Add(tileList[^1].GetComponent<HexTile>().GetCoordinate(), tileList[^1].transform);
             }
         }
     }
@@ -119,14 +122,22 @@ public class GridManager : MonoBehaviour
         if (_currentTile != null && _currentTile.GetComponent<HexTile>() != null && _currentTile != _previousTile)
         {
             //Debug.Log("tile is: " + _currentTile.GetComponent<HexTile>().Coordinate);
-            _currentTile.GetComponent<SpriteRenderer>().color = Color.yellow;
-            if(_previousTile)
+            if (_selectedWeeble == null || !_selectedWeeble.transform.IsChildOf(_currentTile.transform))
+            {
+                _currentTile.GetComponent<SpriteRenderer>().color = Color.yellow;
+            }
+            if (_previousTile && (_selectedWeeble == null || !_selectedWeeble.transform.IsChildOf(_previousTile.transform)))
+            {
                 _previousTile.GetComponent<SpriteRenderer>().color = Color.white;
-            Debug.Log(HexTile.GetDistance(_currentTile.GetComponent<HexTile>().Coordinate, Vector3Int.zero));
+            }
+            //Debug.Log(HexTile.GetDistance(_currentTile.GetComponent<HexTile>().Coordinate, Vector3Int.zero));
             
         } else if (_currentTile == null && _previousTile != null)
         {
-            _previousTile.GetComponent<SpriteRenderer>().color = Color.white;
+            if (_selectedWeeble == null || !_selectedWeeble.transform.IsChildOf(_previousTile.transform))
+            {
+                _previousTile.GetComponent<SpriteRenderer>().color = Color.white;
+            }
         }
         
         
@@ -146,7 +157,36 @@ public class GridManager : MonoBehaviour
             if (_currentTile != null)
             {
                 Debug.Log("Tile clicked: " + _currentTile.GetComponent<HexTile>().Coordinate);
-                _testGreeble.GetComponent<GamePiece>().MoveGreeble(_currentTile.GetComponent<HexTile>().Coordinate);
+
+                if (_selectedWeeble == null)
+                {
+                    if (_currentTile.transform.childCount > 0 && _currentTile.transform.GetChild(0).GetComponent<GamePiece>().weeb.getTeam() == Gameplay.GetTurn())
+                    {
+                        _currentTile.GetComponent<SpriteRenderer>().color = Color.red;
+                        _selectedWeeble = _currentTile.transform.GetChild(0).gameObject;
+                    }
+                } else
+                {
+                    if (!_selectedWeeble.transform.IsChildOf(_currentTile.transform))
+                    {
+                        if (_selectedWeeble.GetComponent<GamePiece>().MoveGreeble(_currentTile.GetComponent<HexTile>().Coordinate))
+                        {
+                            _selectedWeeble.transform.parent.GetComponent<SpriteRenderer>().color = Color.white;
+                            _selectedWeeble.transform.parent = _currentTile.transform;
+                            _selectedWeeble = null;
+                            Gameplay.ToggleTurn();
+                        } else
+                        {
+                            _selectedWeeble.transform.parent.GetComponent<SpriteRenderer>().color = Color.white;
+                            _selectedWeeble = null;
+                        }
+                    } else
+                    {
+                        _selectedWeeble = null;
+                        _currentTile.GetComponent<SpriteRenderer>().color = Color.white;
+                    }
+                }
+
             }
         }
     }

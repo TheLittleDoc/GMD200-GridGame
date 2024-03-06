@@ -82,6 +82,10 @@ public class HexTile : MonoBehaviour
     {
         return coordinate.x + ", " + coordinate.y + ", " + coordinate.z;
     }
+    public Vector3Int GetCoordinate()
+    {
+        return coordinate;
+    }
     
     public static Vector3Int[] GetNeighbors(Vector3Int coordinate)
     {

@@ -1,3 +1,5 @@
+//Written By Ely
+//Heavily Modified by Ella
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -9,11 +11,14 @@ public class GamePiece : MonoBehaviour
     [SerializeField] private Vector3Int _startingPosition;
     [SerializeField] private Weeble.Type _type;
     [SerializeField] private Weeble.Team _team;
-    private Weeble weeb;
+    public const int _NUMBER_OF_WEEBS_STARTING_ON_FIELD = 14;
+    public Weeble weeb;
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = HexTile.GridToWorldspace(new Vector3Int(_startingPosition.x, _startingPosition.y, _startingPosition.z));
+        transform.parent = GridManager.tileDict[_startingPosition];
+        //transform.position = HexTile.GridToWorldspace(new Vector3Int(_startingPosition.x, _startingPosition.y, _startingPosition.z));
+        
         switch (_type)
         {
             case Weeble.Type.Pawn:
@@ -39,7 +44,6 @@ public class GamePiece : MonoBehaviour
     {
         
     }
-    
     public bool MoveGreeble(Vector3Int newCoordinate)
     {
         if (weeb.isValidMove(newCoordinate))
