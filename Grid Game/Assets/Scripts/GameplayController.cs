@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public static class Gameplay
 {
-    private static Weeble.Team turn = Weeble.Team.Greeble;
+    private static Weeble.Team turn = Weeble.Team.Wug;
     public static void ToggleTurn()
     {
         if (turn == Weeble.Team.Greeble)
@@ -18,6 +18,7 @@ public static class Gameplay
         {
             turn = Weeble.Team.Greeble;
         }
+        Camera.main.GetComponent<CameraSpinController>().SpinCamera();
     }
     public static bool isWugTurn()
     {

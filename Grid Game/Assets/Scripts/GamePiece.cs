@@ -42,7 +42,7 @@ public class GamePiece : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        transform.rotation = Camera.main.transform.rotation;
     }
     public bool MoveGreeble(Vector3Int newCoordinate)
     {
