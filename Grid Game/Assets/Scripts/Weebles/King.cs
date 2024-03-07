@@ -13,9 +13,9 @@ public class King : Weeble
     {
         return HexTile.GetNeighbors(coor);
     }
-    public override bool canBeTakenBy(Weeble weeb)
+    public override bool canAttack(Weeble weeb)
     {
-        return weeb.isPawn() || weeb.isKing();
+        return true;
     }
     public King(Team team, Vector3Int coordinates)
     {

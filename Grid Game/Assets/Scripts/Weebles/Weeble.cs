@@ -29,9 +29,9 @@ public abstract class Weeble
     }
     public abstract bool isValidMove(Vector3Int end);
     public abstract Vector3Int[] getValidMoves();
-    public virtual bool canBeTakenBy(Weeble weeb)
+    public virtual bool canAttack(Weeble weeb)
     {
-        return true;
+        return weeb.type != Type.King;
     }
     public bool isAlive()
     {

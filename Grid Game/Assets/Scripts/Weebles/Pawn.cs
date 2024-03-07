@@ -15,6 +15,10 @@ public class Pawn : Weeble
     {
         return HexTile.GetNeighbors(coor);
     }
+    public override bool canAttack(Weeble weeb)
+    {
+        return true;
+    }
     public Pawn(Team team, Vector3Int coordinates)
     {
         this.team = team;

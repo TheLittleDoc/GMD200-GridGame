@@ -183,7 +183,25 @@ public class GridManager : MonoBehaviour
                         if (_currentTile.transform.childCount > 0)
                         {
                             //already a weeb here
-                            DeselectWeeble();
+                            if (_currentTile.transform.GetChild(0).GetComponent<GamePiece>().weeb.getTeam() != Gameplay.GetTurn())
+                            {
+                                //attacking enemy weeb
+                                if (_selectedWeeble.GetComponent<GamePiece>().weeb.canAttack(_currentTile.transform.GetChild(0).GetComponent<GamePiece>().weeb))
+                                {
+                                    //attack is allowed
+                                    Destroy(_currentTile.transform.GetChild(0).gameObject);
+                                    _selectedWeeble.GetComponent<GamePiece>().MoveGreeble(_currentTile.GetComponent<HexTile>().Coordinate);
+                                    CleanupWeebleMove();
+                                } else
+                                {
+                                    //attack is disallowed
+                                    DeselectWeeble();
+                                }
+                            } else
+                            {
+                                //attacking own weeb
+                                DeselectWeeble();
+                            }
                         } else if (_selectedWeeble.GetComponent<GamePiece>().MoveGreeble(_currentTile.GetComponent<HexTile>().Coordinate))
                         {
                             //if it's a valid move
