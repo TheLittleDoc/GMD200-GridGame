@@ -33,6 +33,7 @@ public abstract class Weeble
     {
         return weeb.type != Type.King;
     }
+    public virtual void doAttack(Weeble weeb) {}
     public bool isAlive()
     {
         return isLive;

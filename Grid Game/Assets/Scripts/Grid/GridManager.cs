@@ -189,9 +189,17 @@ public class GridManager : MonoBehaviour
                                 if (_selectedWeeble.GetComponent<GamePiece>().weeb.canAttack(_currentTile.transform.GetChild(0).GetComponent<GamePiece>().weeb))
                                 {
                                     //attack is allowed
-                                    Destroy(_currentTile.transform.GetChild(0).gameObject);
-                                    _selectedWeeble.GetComponent<GamePiece>().MoveGreeble(_currentTile.GetComponent<HexTile>().Coordinate);
-                                    CleanupWeebleMove();
+                                    if (_selectedWeeble.GetComponent<GamePiece>().MoveGreeble(_currentTile.GetComponent<HexTile>().Coordinate))
+                                    {
+                                        //move is allowed
+                                        _selectedWeeble.GetComponent<GamePiece>().weeb.doAttack(_currentTile.transform.GetChild(0).GetComponent<GamePiece>().weeb);
+                                        CleanupWeebleMove();
+                                        Destroy(_currentTile.transform.GetChild(0).gameObject);
+                                    } else
+                                    {
+                                        //move is disallowed
+                                        DeselectWeeble();
+                                    }
                                 } else
                                 {
                                     //attack is disallowed

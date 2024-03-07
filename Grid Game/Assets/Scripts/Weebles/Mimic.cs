@@ -24,6 +24,31 @@ class Mimic : Weeble
         isLive = true;
         mask = new Pawn(team, coordinates);
     }
+    public override bool canAttack(Weeble weeb)
+    {
+        return mask.canAttack(weeb);
+    }
+    public override void doAttack(Weeble weeb)
+    {
+        switch (weeb.getType())
+        {
+            case Weeble.Type.Pawn:
+                mask = new Pawn(team, coor);
+                break;
+            case Weeble.Type.Diag:
+                mask = new Diag(team, coor);
+                break;
+            case Weeble.Type.Mimic:
+                mask = new Mimic(team, coor);
+                break;
+            case Weeble.Type.Scout:
+                mask = new Scout(team, coor);
+                break;
+            case Weeble.Type.King:
+                mask = new King(team, coor);
+                break;
+        }
+    }
     public override void setCoordinates(Vector3Int newCoordinates)
     {
         coor = newCoordinates;
