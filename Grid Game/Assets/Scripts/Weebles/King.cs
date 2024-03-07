@@ -15,7 +15,7 @@ public class King : Weeble
     }
     public override bool canAttack(Weeble weeb)
     {
-        return true;
+        return weeb.getTeam() != team;
     }
     public King(Team team, Vector3Int coordinates)
     {

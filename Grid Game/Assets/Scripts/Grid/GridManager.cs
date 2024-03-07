@@ -1,5 +1,5 @@
-//Written by Ely
-//Modified by Ella
+//Started by Ely
+//Heavily written by Ella
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -171,7 +171,8 @@ public class GridManager : MonoBehaviour
                         _validMoves = _selectedWeeble.GetComponent<GamePiece>().weeb.getValidMoves();
                         foreach (Vector3Int coor in _validMoves)
                         {
-                            tileDict[coor].GetComponent<SpriteRenderer>().color = Color.green;
+                            if (tileDict[coor].childCount == 0 || _selectedWeeble.GetComponent<GamePiece>().weeb.canAttack(tileDict[coor].GetChild(0).GetComponent<GamePiece>().weeb))
+                                tileDict[coor].GetComponent<SpriteRenderer>().color = Color.green;
                         }
                     }
                 } else
@@ -183,31 +184,23 @@ public class GridManager : MonoBehaviour
                         if (_currentTile.transform.childCount > 0)
                         {
                             //already a weeb here
-                            if (_currentTile.transform.GetChild(0).GetComponent<GamePiece>().weeb.getTeam() != Gameplay.GetTurn())
+                            if (_selectedWeeble.GetComponent<GamePiece>().weeb.canAttack(_currentTile.transform.GetChild(0).GetComponent<GamePiece>().weeb))
                             {
-                                //attacking enemy weeb
-                                if (_selectedWeeble.GetComponent<GamePiece>().weeb.canAttack(_currentTile.transform.GetChild(0).GetComponent<GamePiece>().weeb))
+                                //attack is allowed
+                                if (_selectedWeeble.GetComponent<GamePiece>().MoveGreeble(_currentTile.GetComponent<HexTile>().Coordinate))
                                 {
-                                    //attack is allowed
-                                    if (_selectedWeeble.GetComponent<GamePiece>().MoveGreeble(_currentTile.GetComponent<HexTile>().Coordinate))
-                                    {
-                                        //move is allowed
-                                        _selectedWeeble.GetComponent<GamePiece>().weeb.doAttack(_currentTile.transform.GetChild(0).GetComponent<GamePiece>().weeb);
-                                        CleanupWeebleMove();
-                                        Destroy(_currentTile.transform.GetChild(0).gameObject);
-                                    } else
-                                    {
-                                        //move is disallowed
-                                        DeselectWeeble();
-                                    }
+                                    //move is allowed
+                                    _selectedWeeble.GetComponent<GamePiece>().weeb.doAttack(_currentTile.transform.GetChild(0).GetComponent<GamePiece>().weeb);
+                                    CleanupWeebleMove();
+                                    Destroy(_currentTile.transform.GetChild(0).gameObject);
                                 } else
                                 {
-                                    //attack is disallowed
+                                    //move is disallowed
                                     DeselectWeeble();
                                 }
                             } else
                             {
-                                //attacking own weeb
+                                //attack is disallowed
                                 DeselectWeeble();
                             }
                         } else if (_selectedWeeble.GetComponent<GamePiece>().MoveGreeble(_currentTile.GetComponent<HexTile>().Coordinate))

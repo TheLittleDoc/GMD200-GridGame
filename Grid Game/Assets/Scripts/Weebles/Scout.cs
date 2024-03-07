@@ -29,7 +29,7 @@ class Scout : Weeble
     }
     public override bool canAttack(Weeble weeb)
     {
-        return weeb.getType() != Type.King && HexTile.GetDistance(coor, weeb.getCoordinates()) == 1;
+        return weeb.getTeam() != team && weeb.getType() != Type.King && HexTile.GetDistance(coor, weeb.getCoordinates()) == 1;
     }
     public Scout(Team team, Vector3Int coordinates)
     {

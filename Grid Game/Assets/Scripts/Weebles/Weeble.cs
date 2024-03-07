@@ -31,7 +31,7 @@ public abstract class Weeble
     public abstract Vector3Int[] getValidMoves();
     public virtual bool canAttack(Weeble weeb)
     {
-        return weeb.type != Type.King;
+        return weeb.getTeam() != team && weeb.type != Type.King;
     }
     public virtual void doAttack(Weeble weeb) {}
     public bool isAlive()

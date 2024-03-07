@@ -17,7 +17,7 @@ public class Pawn : Weeble
     }
     public override bool canAttack(Weeble weeb)
     {
-        return true;
+        return weeb.getTeam() != team;
     }
     public Pawn(Team team, Vector3Int coordinates)
     {
