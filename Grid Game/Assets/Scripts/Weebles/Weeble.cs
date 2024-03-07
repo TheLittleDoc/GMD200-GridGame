@@ -81,6 +81,10 @@ public abstract class Weeble
     {
         return type == Type.King;
     }
+    public bool isSoup()
+    {
+        return type == Type.Soup;
+    }
     public Type getType()
     {
         return type;
@@ -95,7 +99,7 @@ public abstract class Weeble
     }
     public enum Type
     {
-        Pawn, Diag, Scout, Mimic, King
+        Pawn, Diag, Scout, Mimic, King, Soup
     };
     public enum Team
     {

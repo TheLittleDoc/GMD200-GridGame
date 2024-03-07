@@ -11,12 +11,12 @@ public class Soup : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        // Instanciate two Soups, one for Wug one for Greeble
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        // Checks to see if opposing team is on tile next to Soup
     }
 }
