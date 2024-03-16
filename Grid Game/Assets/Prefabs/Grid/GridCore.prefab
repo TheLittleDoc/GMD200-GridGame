@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 138178526168306351}
   m_Layer: 0
   m_Name: GridCore
-  m_TagString: Untagged
+  m_TagString: Grid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,6 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 8048643484937250301, guid: a4cab179675f422bfae33702cf50d6f5, type: 3}
   sideLength: 4
+  tileList: []
+  shells: []
   tileSprites:
   - {fileID: 21300000, guid: c567293d95b309384aa7f728b516b082, type: 3}
   - {fileID: 21300000, guid: 5c2f3c9e27599fc90bf331895edf1352, type: 3}
