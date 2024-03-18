@@ -28,6 +28,7 @@ public class GridManager : MonoBehaviour
     private GameObject _previousTile;
     //private GameObject _testGreeble;
     private GameObject _selectedWeeble;
+    private GamePiece _selectedGamePiece;
     private Vector3Int[] _validMoves;
 
     // Start is called before the first frame update
@@ -162,35 +163,36 @@ public class GridManager : MonoBehaviour
 
                 if (_selectedWeeble == null)
                 {
-                    //no weeb yet selected
-                    if (_currentTile.transform.childCount > 0 && _currentTile.transform.GetChild(0).GetComponent<GamePiece>().weeb.getTeam() == Gameplay.GetTurn())
+                    //no thisWeeble yet selected
+                    if (_currentTile.transform.childCount > 0 && _currentTile.transform.GetChild(0).GetComponent<GamePiece>().thisWeeble.getTeam() == Gameplay.GetTurn())
                     {
-                        //valid weeb
+                        //valid thisWeeble
                         _currentTile.GetComponent<SpriteRenderer>().color = Color.red;
                         _selectedWeeble = _currentTile.transform.GetChild(0).gameObject;
-                        _validMoves = _selectedWeeble.GetComponent<GamePiece>().weeb.getValidMoves();
+                        _selectedGamePiece = _selectedWeeble.GetComponent<GamePiece>();
+                        _validMoves = _selectedGamePiece.thisWeeble.getValidMoves();
                         foreach (Vector3Int coor in _validMoves)
                         {
-                            if (tileDict[coor].childCount == 0 || _selectedWeeble.GetComponent<GamePiece>().weeb.canAttack(tileDict[coor].GetChild(0).GetComponent<GamePiece>().weeb))
+                            if (tileDict[coor].childCount == 0 || _selectedGamePiece.thisWeeble.canAttack(tileDict[coor].GetChild(0).GetComponent<GamePiece>().thisWeeble))
                                 tileDict[coor].GetComponent<SpriteRenderer>().color = Color.green;
                         }
                     }
                 } else
                 {
-                    //trying to move weeb
+                    //trying to move thisWeeble
                     if (!_selectedWeeble.transform.IsChildOf(_currentTile.transform))
                     {
                         //not trying to move to self
                         if (_currentTile.transform.childCount > 0)
                         {
-                            //already a weeb here
-                            if (_selectedWeeble.GetComponent<GamePiece>().weeb.canAttack(_currentTile.transform.GetChild(0).GetComponent<GamePiece>().weeb))
+                            //already a thisWeeble here
+                            if (_selectedGamePiece.thisWeeble.canAttack(_currentTile.transform.GetChild(0).GetComponent<GamePiece>().thisWeeble))
                             {
                                 //attack is allowed
-                                if (_selectedWeeble.GetComponent<GamePiece>().MoveGreeble(_currentTile.GetComponent<HexTile>().Coordinate))
+                                if (_selectedGamePiece.MoveGreeble(_currentTile.GetComponent<HexTile>().Coordinate))
                                 {
                                     //move is allowed
-                                    _selectedWeeble.GetComponent<GamePiece>().weeb.doAttack(_currentTile.transform.GetChild(0).GetComponent<GamePiece>().weeb);
+                                    _selectedGamePiece.thisWeeble.doAttack(_currentTile.transform.GetChild(0).GetComponent<GamePiece>().thisWeeble);
                                     CleanupWeebleMove();
                                     Destroy(_currentTile.transform.GetChild(0).gameObject);
                                 } else
@@ -203,7 +205,7 @@ public class GridManager : MonoBehaviour
                                 //attack is disallowed
                                 DeselectWeeble();
                             }
-                        } else if (_selectedWeeble.GetComponent<GamePiece>().MoveGreeble(_currentTile.GetComponent<HexTile>().Coordinate))
+                        } else if (_selectedGamePiece.MoveGreeble(_currentTile.GetComponent<HexTile>().Coordinate))
                         {
                             //if it's a valid move
                             CleanupWeebleMove();
@@ -227,6 +229,7 @@ public class GridManager : MonoBehaviour
     {
         _selectedWeeble.transform.parent.GetComponent<SpriteRenderer>().color = Color.white;
         _selectedWeeble = null;
+        _selectedGamePiece = null;
         foreach (Vector3Int coor in _validMoves)
         {
             tileDict[coor].GetComponent<SpriteRenderer>().color = Color.white;
