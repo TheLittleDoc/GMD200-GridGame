@@ -1,5 +1,5 @@
 //Written By Ely
-//Heavily Modified by Ella
+//Modified by Ella
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -28,6 +28,13 @@ public class GamePiece : MonoBehaviour
                 GetComponent<SpriteRenderer>().sprite = _bodies[0];
                 Instantiate(_eyes[0], transform);
                 
+                break;
+            case Weeble.Team.Wug:
+                GetComponent<SpriteRenderer>().sprite = _bodies[1];
+                break;
+            case Weeble.Team.Soup:
+                GetComponent<SpriteRenderer>().sprite = _bodies[2];
+                Instantiate(_eyes[1], transform);
                 break;
                 
         }
@@ -60,15 +67,36 @@ public class GamePiece : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.rotation = Camera.main.transform.rotation;
+        if(thisWeeble.IsDead())
+        {
+            return;
+        }
+        var rotation = Camera.main.transform.rotation;
+        transform.rotation = rotation;
+        //layer based on y position
+        
+        if (rotation.z > 0.5f)
+        {
+            GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(transform.position.y * 100);
+            if(thisWeeble.GetTeam() == Weeble.Team.Greeble)
+                transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(transform.position.y * 100)+1;
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().sortingOrder = -Mathf.RoundToInt(transform.position.y * 100);
+            if(thisWeeble.GetTeam() == Weeble.Team.Greeble)
+                transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = -Mathf.RoundToInt(transform.position.y * 100)+1;
+        }
+        
+        
     }
     public bool MoveGreeble(Vector3Int newCoordinate)
     {
-        if (thisWeeble.isValidMove(newCoordinate))
+        if (thisWeeble.IsValidMove(newCoordinate))
         {
             //dotween
             transform.DOMove(HexTile.GridToWorldspace(new Vector3Int(newCoordinate.x, newCoordinate.y, newCoordinate.z)), 0.5f);
-            thisWeeble.setCoordinates(newCoordinate);
+            thisWeeble.SetCoordinates(newCoordinate);
             return true;
         }
         return false;

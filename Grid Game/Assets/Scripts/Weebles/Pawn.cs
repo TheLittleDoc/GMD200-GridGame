@@ -7,17 +7,17 @@ using UnityEngine;
 
 public class Pawn : Weeble
 {
-    public override bool isValidMove(Vector3Int end)
+    public override bool IsValidMove(Vector3Int end)
     {
         return HexTile.IsNeighbor(coor, end);
     }
-    public override Vector3Int[] getValidMoves()
+    public override Vector3Int[] GetValidMoves()
     {
         return HexTile.GetNeighbors(coor);
     }
-    public override bool canAttack(Weeble weeb)
+    public override bool CanAttack(Weeble weeble)
     {
-        return weeb.getTeam() != team;
+        return weeble.GetTeam() != team;
     }
     public Pawn(Team team, Vector3Int coordinates)
     {

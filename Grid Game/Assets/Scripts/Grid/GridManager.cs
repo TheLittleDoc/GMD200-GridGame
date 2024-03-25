@@ -22,11 +22,9 @@ public class GridManager : MonoBehaviour
     private int direction = 0;
     private int sideCount = 0;
     
-    private GameObject mouseSprite;
     private Camera _camera;
     private GameObject _currentTile;
     private GameObject _previousTile;
-    //private GameObject _testGreeble;
     private GameObject _selectedWeeble;
     private GamePiece _selectedGamePiece;
     private Vector3Int[] _validMoves;
@@ -46,17 +44,7 @@ public class GridManager : MonoBehaviour
         tileList[0].GetComponent<HexTile>().SetCoordinate(new Vector3Int(0, 0, 0));
         tileList[0].transform.parent = transform;
         tileList[0].GetComponent<SpriteRenderer>().sprite = tileSprites[0];
-        
-        //mouseSprite = new GameObject("Mouse Sprite");
-        //mouseSprite.AddComponent<SpriteRenderer>();
-        //mouseSprite.GetComponent<SpriteRenderer>().sprite = tileSprites[0];
-
-
-
-        //_testGreeble = GameObject.FindGameObjectWithTag("Greeble");
-            
-        
-
+        tileList[0].GetComponent<SpriteRenderer>().sortingOrder = -999;
     }
 
     private void OnEnable()
@@ -98,6 +86,7 @@ public class GridManager : MonoBehaviour
         Debug.Log("Setting coordinate");
         tileList[^1].GetComponent<HexTile>().SetCoordinate(coordinate);
         tileList[^1].GetComponent<SpriteRenderer>().sprite = tileList.Count % 2 == 0 ? tileSprites[1] : tileSprites[2];
+        tileList[^1].GetComponent<SpriteRenderer>().sortingOrder = -999;
         if (sideCount == i)
         {
             direction++;
@@ -160,20 +149,22 @@ public class GridManager : MonoBehaviour
             {
                 //on a tile
                 Debug.Log("Tile clicked: " + _currentTile.GetComponent<HexTile>().Coordinate);
+                GetComponent<AudioSource>().Play();
 
                 if (_selectedWeeble == null)
                 {
+                    //play popping sound
                     //no thisWeeble yet selected
-                    if (_currentTile.transform.childCount > 0 && _currentTile.transform.GetChild(0).GetComponent<GamePiece>().thisWeeble.getTeam() == Gameplay.GetTurn())
+                    if (_currentTile.transform.childCount > 0 && _currentTile.transform.GetChild(0).GetComponent<GamePiece>().thisWeeble.GetTeam() == Gameplay.GetTurn())
                     {
                         //valid thisWeeble
                         _currentTile.GetComponent<SpriteRenderer>().color = Color.red;
                         _selectedWeeble = _currentTile.transform.GetChild(0).gameObject;
                         _selectedGamePiece = _selectedWeeble.GetComponent<GamePiece>();
-                        _validMoves = _selectedGamePiece.thisWeeble.getValidMoves();
+                        _validMoves = _selectedGamePiece.thisWeeble.GetValidMoves();
                         foreach (Vector3Int coor in _validMoves)
                         {
-                            if (tileDict[coor].childCount == 0 || _selectedGamePiece.thisWeeble.canAttack(tileDict[coor].GetChild(0).GetComponent<GamePiece>().thisWeeble))
+                            if (tileDict[coor].childCount == 0 || _selectedGamePiece.thisWeeble.CanAttack(tileDict[coor].GetChild(0).GetComponent<GamePiece>().thisWeeble))
                                 tileDict[coor].GetComponent<SpriteRenderer>().color = Color.green;
                         }
                     }
@@ -186,13 +177,13 @@ public class GridManager : MonoBehaviour
                         if (_currentTile.transform.childCount > 0)
                         {
                             //already a thisWeeble here
-                            if (_selectedGamePiece.thisWeeble.canAttack(_currentTile.transform.GetChild(0).GetComponent<GamePiece>().thisWeeble))
+                            if (_selectedGamePiece.thisWeeble.CanAttack(_currentTile.transform.GetChild(0).GetComponent<GamePiece>().thisWeeble))
                             {
                                 //attack is allowed
                                 if (_selectedGamePiece.MoveGreeble(_currentTile.GetComponent<HexTile>().Coordinate))
                                 {
                                     //move is allowed
-                                    _selectedGamePiece.thisWeeble.doAttack(_currentTile.transform.GetChild(0).GetComponent<GamePiece>().thisWeeble);
+                                    _selectedGamePiece.thisWeeble.DoAttack(_currentTile.transform.GetChild(0).GetComponent<GamePiece>().thisWeeble);
                                     CleanupWeebleMove();
                                     Destroy(_currentTile.transform.GetChild(0).gameObject);
                                 } else

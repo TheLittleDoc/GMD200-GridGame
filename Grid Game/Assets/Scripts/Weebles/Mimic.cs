@@ -7,14 +7,14 @@ class Mimic : Weeble
 {
     private Weeble mask;
 
-    public override bool isValidMove(Vector3Int end)
+    public override bool IsValidMove(Vector3Int end)
     {
-        return mask.isValidMove(end);
+        return mask.IsValidMove(end);
     }
 
-    public override Vector3Int[] getValidMoves()
+    public override Vector3Int[] GetValidMoves()
     {
-        return mask.getValidMoves();
+        return mask.GetValidMoves();
     }
     public Mimic(Team team, Vector3Int coordinates)
     {
@@ -24,11 +24,11 @@ class Mimic : Weeble
         isLive = true;
         mask = new Pawn(team, coordinates);
     }
-    public override bool canAttack(Weeble weeb)
+    public override bool CanAttack(Weeble weeble)
     {
-        return mask.canAttack(weeb);
+        return mask.CanAttack(weeble);
     }
-    public override void doAttack(Weeble weeb)
+    public override void DoAttack(Weeble weeb)
     {
         switch (weeb.getType())
         {
@@ -49,9 +49,9 @@ class Mimic : Weeble
                 break;
         }
     }
-    public override void setCoordinates(Vector3Int newCoordinates)
+    public override void SetCoordinates(Vector3Int newCoordinates)
     {
         coor = newCoordinates;
-        mask.setCoordinates(newCoordinates);
+        mask.SetCoordinates(newCoordinates);
     }
 }

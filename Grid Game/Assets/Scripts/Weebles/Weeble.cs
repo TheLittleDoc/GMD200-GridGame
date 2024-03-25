@@ -10,7 +10,7 @@ public abstract class Weeble
     protected Team team;
     protected Type type;
     protected Vector3Int coor;
-    protected bool isLive;
+    protected bool isLive = true;
     protected void removeOutOfBoundsResults(List<Vector3Int> list)
     {
         int i = 0;
@@ -27,62 +27,62 @@ public abstract class Weeble
         }
         Debug.Log(list.Count);
     }
-    public abstract bool isValidMove(Vector3Int end);
-    public abstract Vector3Int[] getValidMoves();
-    public virtual bool canAttack(Weeble weeb)
+    public abstract bool IsValidMove(Vector3Int end);
+    public abstract Vector3Int[] GetValidMoves();
+    public virtual bool CanAttack(Weeble weeble)
     {
-        return weeb.getTeam() != team && weeb.type != Type.King;
+        return weeble.GetTeam() != team && weeble.type != Type.King;
     }
-    public virtual void doAttack(Weeble weeb) {}
-    public bool isAlive()
+    public virtual void DoAttack(Weeble weeble) {}
+    public bool IsAlive()
     {
         return isLive;
     }
-    public bool isDead()
+    public bool IsDead()
     {
         return !isLive;
     }
-    public void setDead()
+    public void SetDead()
     {
         isLive = false;
     }
-    public void setAlive()
+    public void SetAlive()
     {
         isLive = true;
     }
-    public bool isWug()
+    public bool IsWug()
     {
         return team == Team.Wug;
     }
-    public bool isGreeble()
+    public bool IsGreeble()
     {
         return team == Team.Greeble;
     }
-    public Team getTeam()
+    public Team GetTeam()
     {
         return team;
     }
-    public bool isPawn()
+    public bool IsPawn()
     {
         return type == Type.Pawn;
     }
-    public bool isDiag()
+    public bool IsDiag()
     {
         return type == Type.Diag;
     }
-    public bool isScout()
+    public bool IsScout()
     {
         return type == Type.Scout;
     }
-    public bool isMimic()
+    public bool IsMimic()
     {
         return type == Type.Mimic;
     }
-    public bool isKing()
+    public bool IsKing()
     {
         return type == Type.King;
     }
-    public bool isSoup()
+    public bool IsSoup()
     {
         return type == Type.Soup;
     }
@@ -90,11 +90,11 @@ public abstract class Weeble
     {
         return type;
     }
-    public Vector3Int getCoordinates()
+    public Vector3Int GetCoordinates()
     {
         return coor;
     }
-    public virtual void setCoordinates(Vector3Int newCoordinates)
+    public virtual void SetCoordinates(Vector3Int newCoordinates)
     {
         coor = newCoordinates;
     }
@@ -104,6 +104,6 @@ public abstract class Weeble
     };
     public enum Team
     {
-        Greeble, Wug
+        Greeble, Wug, Soup
     };
 }

@@ -7,11 +7,11 @@ using UnityEngine;
 
 class Scout : Weeble
 {
-    public override bool isValidMove(Vector3Int end)
+    public override bool IsValidMove(Vector3Int end)
     {
         return HexTile.GetDistance(coor, end) < 4;
     }
-    public override Vector3Int[] getValidMoves()
+    public override Vector3Int[] GetValidMoves()
     {
         var list = new List<Vector3Int>();
 
@@ -27,9 +27,9 @@ class Scout : Weeble
         removeOutOfBoundsResults(list);
         return list.ToArray();
     }
-    public override bool canAttack(Weeble weeb)
+    public override bool CanAttack(Weeble weeble)
     {
-        return weeb.getTeam() != team && weeb.getType() != Type.King && HexTile.GetDistance(coor, weeb.getCoordinates()) == 1;
+        return weeble.GetTeam() != team && weeble.getType() != Type.King && HexTile.GetDistance(coor, weeble.GetCoordinates()) == 1;
     }
     public Scout(Team team, Vector3Int coordinates)
     {
