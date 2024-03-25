@@ -185,7 +185,7 @@ public class GridManager : MonoBehaviour
                                     if (_currentTile.transform.GetChild(0).GetComponent<GamePiece>().thisWeeble
                                         .IsSoup())
                                     {
-                                        GameManager.isGameOver = true;
+                                        GameManager.GameOver();
                                     }
                                     //move is allowed
                                     _selectedGamePiece.thisWeeble.DoAttack(_currentTile.transform.GetChild(0).GetComponent<GamePiece>().thisWeeble);
