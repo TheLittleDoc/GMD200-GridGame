@@ -22,20 +22,7 @@ public class GamePiece : MonoBehaviour
         transform.parent = GridManager.tileDict[_startingPosition];
         //transform.position = HexTile.GridToWorldspace(new Vector3Int(_startingPosition.x, _startingPosition.y, _startingPosition.z));
 
-        switch (_team)
-        {
-            case Weeble.Team.Greeble:
-                GetComponent<SpriteRenderer>().sprite = _bodies[0];
-                Instantiate(_eyes[0], transform);
-                
-                break;
-            case Weeble.Team.Wug:
-                GetComponent<SpriteRenderer>().sprite = _bodies[1];
-                break;
-            case Weeble.Team.Soup:
-                break;
-                
-        }
+        
 
         switch (_type)
         {
@@ -63,11 +50,38 @@ public class GamePiece : MonoBehaviour
                 thisWeeble = new Soup(_team, _startingPosition);
                 break;
         }
+        
+        switch (_team)
+        {
+            case Weeble.Team.Greeble:
+                if (!thisWeeble.IsSoup())
+                {
+                    GetComponent<SpriteRenderer>().sprite = _bodies[0];
+                    Instantiate(_eyes[0], transform);
+                }
+                
+                
+                break;
+            case Weeble.Team.Wug:
+                if (!thisWeeble.IsSoup())
+                {
+                    GetComponent<SpriteRenderer>().sprite = _bodies[1];
+                }
+                
+                break;
+                
+        }
     }
+    
+    
 
     // Update is called once per frame
     void Update()
     {
+        if(GameManager.isGameOver)
+        {
+            return;
+        }
         if(thisWeeble.IsDead())
         {
             return;
@@ -80,13 +94,15 @@ public class GamePiece : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(transform.position.y * 100);
             if(thisWeeble.GetTeam() == Weeble.Team.Greeble)
-                transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(transform.position.y * 100)+1;
+                if (!thisWeeble.IsSoup())
+                    transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(transform.position.y * 100)+1;
         }
         else
         {
             GetComponent<SpriteRenderer>().sortingOrder = -Mathf.RoundToInt(transform.position.y * 100);
             if(thisWeeble.GetTeam() == Weeble.Team.Greeble)
-                transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = -Mathf.RoundToInt(transform.position.y * 100)+1;
+                if (!thisWeeble.IsSoup())
+                    transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = -Mathf.RoundToInt(transform.position.y * 100)+1;
         }
         
         

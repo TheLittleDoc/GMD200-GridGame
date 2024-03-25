@@ -1,35 +1,23 @@
-//Wrote By Ella
-using System;
+//Writted by Ella
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using UnityEngine;
 
-class Soup : Weeble
+public class Soup : Weeble
 {
     public override bool IsValidMove(Vector3Int end)
     {
-        return HexTile.GetDistance(coor, end) < 4;
+        return false;
     }
     public override Vector3Int[] GetValidMoves()
     {
-        var list = new List<Vector3Int>();
-
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = i == 0 ? 0 : -3; j < 4 - i; j++)
-            {
-                list.Add(new Vector3Int(i, j, - i - j) + coor);
-                list.Add(-new Vector3Int(i, j, - i - j) + coor);
-            }
-        }
-        list.RemoveAt(0);
-        removeOutOfBoundsResults(list);
-        return list.ToArray();
+        return new Vector3Int[0];
     }
     public override bool CanAttack(Weeble weeble)
     {
-        return weeble.GetTeam() != team && weeble.getType() != Type.King && HexTile.GetDistance(coor, weeble.GetCoordinates()) == 1;
+        return false;
     }
     public Soup(Team team, Vector3Int coordinates)
     {

@@ -182,6 +182,11 @@ public class GridManager : MonoBehaviour
                                 //attack is allowed
                                 if (_selectedGamePiece.MoveGreeble(_currentTile.GetComponent<HexTile>().Coordinate))
                                 {
+                                    if (_currentTile.transform.GetChild(0).GetComponent<GamePiece>().thisWeeble
+                                        .IsSoup())
+                                    {
+                                        GameManager.isGameOver = true;
+                                    }
                                     //move is allowed
                                     _selectedGamePiece.thisWeeble.DoAttack(_currentTile.transform.GetChild(0).GetComponent<GamePiece>().thisWeeble);
                                     CleanupWeebleMove();
