@@ -33,13 +33,11 @@ public class GamePiece : MonoBehaviour
                 GetComponent<SpriteRenderer>().sprite = _bodies[1];
                 break;
             case Weeble.Team.Soup:
-                GetComponent<SpriteRenderer>().sprite = _bodies[2];
-                Instantiate(_eyes[1], transform);
                 break;
                 
         }
 
-    switch (_type)
+        switch (_type)
         {
             case Weeble.Type.Pawn:
                 GetComponent<SpriteRenderer>().color = new Color(0.7f, .3f, .7f, 1);
@@ -60,6 +58,9 @@ public class GamePiece : MonoBehaviour
             case Weeble.Type.King:
                 GetComponent<SpriteRenderer>().color = new Color(0.17f, .17f, .17f, 1);
                 thisWeeble = new King(_team, _startingPosition);
+                break;
+            case Weeble.Type.Soup:
+                thisWeeble = new Soup(_team, _startingPosition);
                 break;
         }
     }

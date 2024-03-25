@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class GameManager : MonoBehaviour
     public bool isGameOver = false;
     public GameObject[] listOfGreebles;
     public GameObject[] listOfWugs;
+    private bool _isPopulated = false;
     
     // Start is called before the first frame update
     void Start()
@@ -25,18 +27,29 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         GetComponent<AudioSource>().Play();
+        
+    }
+
+    private void OnEnable()
+    {
         StartGame();
     }
 
     // Update is called once per frame
     void Update()
     {
+        listOfGreebles = GameObject.FindGameObjectsWithTag("Greeble");
+        listOfWugs = GameObject.FindGameObjectsWithTag("Wug");
+        
+        
+        
         // count of tag greebles not dead
         // if count is 0, game over
         if (isGameOver)
             return;
         for(int i = 0; i < listOfGreebles.Length; i++)
         {
+            Debug.Log(listOfGreebles[i]);
             if (listOfGreebles[i].GetComponent<GamePiece>().thisWeeble.IsDead() == false)
             {
                 //remove dead greebles from list
